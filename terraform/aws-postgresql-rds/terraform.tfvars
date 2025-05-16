@@ -1,0 +1,10 @@
+aws_region           = "eu-north-1"
+db_identifier        = "dev-postgres"
+db_allocated_storage = 20
+db_engine_version = "11.22"
+db_instance_class    = "db.t3.micro"
+db_name              = "devdb"
+db_username          = "postgres"
+db_password          = "MySecurePassword123"
+subnet_ids           = ["subnet-052bb5594a5ee2319", "subnet-0e4be5680387591d2"]
+security_group_id    = "sg-020686e23027d26a2"
