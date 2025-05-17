@@ -20,6 +20,11 @@ Modern database roles demand expertise across various cloud providers, database 
 - **Documentation & Best Practices**  
   Clear, production-oriented notes inside each module explaining architecture, deployment steps, and operational considerations.
 
+## Documentation Templates
+
+- [Reusable Task Documentation Template](docs/tasks/reusable-tasks-template.md)
+
+
 ## Getting Started
 
 ### Prerequisites
