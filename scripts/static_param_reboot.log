@@ -1,0 +1,139 @@
++ DB_INSTANCE_ID=pg17-db
++ PARAMETER_GROUP_NAME=pg17-custom-params
++ REGION=us-east-1
++ echo '🔍 Current RDS instance uptime and status:'
+🔍 Current RDS instance uptime and status:
++ aws rds describe-db-instances --db-instance-identifier pg17-db --region us-east-1 --query 'DBInstances[0].{Status:DBInstanceStatus,InstanceCreateTime:InstanceCreateTime}' --output table
+---------------------------------------------------
+|               DescribeDBInstances               |
++-----------------------------------+-------------+
+|        InstanceCreateTime         |   Status    |
++-----------------------------------+-------------+
+|  2025-05-18T17:40:45.430000+00:00 |  available  |
++-----------------------------------+-------------+
++ echo ''
+
++ echo '⚙️  Modifying static parameters...'
+⚙️  Modifying static parameters...
++ aws rds modify-db-parameter-group --db-parameter-group-name pg17-custom-params --parameters ParameterName=shared_preload_libraries,ParameterValue=pg_stat_statements,ApplyMethod=pending-reboot --region us-east-1
+{
+    "DBParameterGroupName": "pg17-custom-params"
+}
++ echo ''
+
++ echo '🔁 Rebooting the RDS instance to apply static parameters...'
+🔁 Rebooting the RDS instance to apply static parameters...
++ aws rds reboot-db-instance --db-instance-identifier pg17-db --region us-east-1
+{
+    "DBInstance": {
+        "DBInstanceIdentifier": "pg17-db",
+        "DBInstanceClass": "db.t3.micro",
+        "Engine": "postgres",
+        "DBInstanceStatus": "rebooting",
+        "MasterUsername": "postgresadmin",
+        "DBName": "postgres",
+        "Endpoint": {
+            "Address": "pg17-db.cw72om0woqa7.us-east-1.rds.amazonaws.com",
+            "Port": 5432,
+            "HostedZoneId": "Z2R2ITUGPM61AM"
+        },
+        "AllocatedStorage": 20,
+        "InstanceCreateTime": "2025-05-18T17:40:45.430000+00:00",
+        "PreferredBackupWindow": "06:30-07:00",
+        "BackupRetentionPeriod": 0,
+        "DBSecurityGroups": [],
+        "VpcSecurityGroups": [
+            {
+                "VpcSecurityGroupId": "sg-027ef810fd296be18",
+                "Status": "active"
+            }
+        ],
+        "DBParameterGroups": [
+            {
+                "DBParameterGroupName": "pg17-custom-params",
+                "ParameterApplyStatus": "applying"
+            }
+        ],
+        "AvailabilityZone": "us-east-1a",
+        "DBSubnetGroup": {
+            "DBSubnetGroupName": "pg-db-subnet-group",
+            "DBSubnetGroupDescription": "Managed by Terraform",
+            "VpcId": "vpc-0c7717e791f603cf4",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetIdentifier": "subnet-0b9afa4903db9f1d9",
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetIdentifier": "subnet-04a5a2616783899f9",
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ]
+        },
+        "PreferredMaintenanceWindow": "thu:04:16-thu:04:46",
+        "PendingModifiedValues": {},
+        "MultiAZ": false,
+        "EngineVersion": "17.5",
+        "AutoMinorVersionUpgrade": true,
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "LicenseModel": "postgresql-license",
+        "OptionGroupMemberships": [
+            {
+                "OptionGroupName": "default:postgres-17",
+                "Status": "in-sync"
+            }
+        ],
+        "PubliclyAccessible": true,
+        "StorageType": "gp2",
+        "DbInstancePort": 0,
+        "StorageEncrypted": false,
+        "DbiResourceId": "db-EZD2UR547JY42KGDDK6NZCSRPY",
+        "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+        "DomainMemberships": [],
+        "CopyTagsToSnapshot": false,
+        "MonitoringInterval": 0,
+        "DBInstanceArn": "arn:aws:rds:us-east-1:950724106693:db:pg17-db",
+        "IAMDatabaseAuthenticationEnabled": false,
+        "DatabaseInsightsMode": "standard",
+        "PerformanceInsightsEnabled": false,
+        "DeletionProtection": false,
+        "AssociatedRoles": [],
+        "TagList": [],
+        "CustomerOwnedIpEnabled": false,
+        "BackupTarget": "region",
+        "NetworkType": "IPV4",
+        "StorageThroughput": 0,
+        "CertificateDetails": {
+            "CAIdentifier": "rds-ca-rsa2048-g1",
+            "ValidTill": "2026-05-18T17:39:41+00:00"
+        },
+        "DedicatedLogVolume": false,
+        "EngineLifecycleSupport": "open-source-rds-extended-support"
+    }
+}
++ echo ''
+
++ echo '⏳ Waiting for instance to become available again...'
+⏳ Waiting for instance to become available again...
++ aws rds wait db-instance-available --db-instance-identifier pg17-db --region us-east-1
++ echo ''
+
++ echo '✅ Done. Fetching post-reboot instance info...'
+✅ Done. Fetching post-reboot instance info...
++ aws rds describe-db-instances --db-instance-identifier pg17-db --region us-east-1 --query 'DBInstances[0].{Status:DBInstanceStatus,InstanceCreateTime:InstanceCreateTime}' --output table
+---------------------------------------------------
+|               DescribeDBInstances               |
++-----------------------------------+-------------+
+|        InstanceCreateTime         |   Status    |
++-----------------------------------+-------------+
+|  2025-05-18T17:40:45.430000+00:00 |  available  |
++-----------------------------------+-------------+
