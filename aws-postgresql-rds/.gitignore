@@ -1,0 +1,27 @@
+# Inside terraform/aws-postgresql-rds/.gitignore or repo root
+
+# Terraform directories and files
+.terraform/
+*.tfstate
+*.tfstate.backup
+crash.log
+override.tf
+override.tf.json
+*.log
+terraform.tfvars
+planfile
+secret.json
+git-filter-repo-2.47.0/
+
+# Executables and provider binaries
+*.exe
+*.zip
+
+# Sensitive or environment-specific
+*.pem
+*.key
+*.env
+
+# OS-specific
+.DS_Store
+Thumbs.db

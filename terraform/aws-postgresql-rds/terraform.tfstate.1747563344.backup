@@ -1,0 +1,201 @@
+{
+  "version": 4,
+  "terraform_version": "1.12.0",
+  "serial": 41,
+  "lineage": "5b65fa93-300c-7a6f-0beb-c4fcffcdc7fb",
+  "outputs": {
+    "db_endpoint": {
+      "value": "postgres1.cw72om0woqa7.us-east-1.rds.amazonaws.com:5432",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_db_parameter_group",
+      "name": "pg17_custom",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "status": "tainted",
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:rds:us-east-1:950724106693:pg:pg17-custom-params",
+            "description": "PostgreSQL 17.5 tuning: autovacuum, logging, stat_statements",
+            "family": "postgres17",
+            "id": "pg17-custom-params",
+            "name": "pg17-custom-params",
+            "name_prefix": null,
+            "parameter": [
+              {
+                "apply_method": "immediate",
+                "name": "autovacuum_analyze_threshold",
+                "value": "50"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "autovacuum_naptime",
+                "value": "20s"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "autovacuum_vacuum_cost_limit",
+                "value": "200"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "autovacuum_vacuum_threshold",
+                "value": "50"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "log_min_duration_statement",
+                "value": "1000"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "log_statement",
+                "value": "ddl"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "pg_stat_statements.max",
+                "value": "10000"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "pg_stat_statements.track",
+                "value": "all"
+              },
+              {
+                "apply_method": "immediate",
+                "name": "shared_preload_libraries",
+                "value": "pg_stat_statements"
+              }
+            ],
+            "skip_destroy": false,
+            "tags": null,
+            "tags_all": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_db_subnet_group",
+      "name": "db_subnet",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:rds:us-east-1:950724106693:subgrp:postgres1-subnet-group",
+            "description": "Managed by Terraform",
+            "id": "postgres1-subnet-group",
+            "name": "postgres1-subnet-group",
+            "name_prefix": "",
+            "subnet_ids": [
+              "subnet-0791ae47bd41ba59d",
+              "subnet-0ad53e3119e24c782"
+            ],
+            "supported_network_types": [
+              "IPV4"
+            ],
+            "tags": {
+              "Name": "postgres1-subnet-group"
+            },
+            "tags_all": {
+              "Name": "postgres1-subnet-group"
+            },
+            "vpc_id": "vpc-0c7717e791f603cf4"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret",
+      "name": "db_secret",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-1:950724106693:secret:rds/dev-postgres/postgres1/kkpostgres-l6Sh6a",
+            "description": "",
+            "force_overwrite_replica_secret": false,
+            "id": "arn:aws:secretsmanager:us-east-1:950724106693:secret:rds/dev-postgres/postgres1/kkpostgres-l6Sh6a",
+            "kms_key_id": "",
+            "name": "rds/dev-postgres/postgres1/kkpostgres",
+            "name_prefix": "",
+            "policy": "",
+            "recovery_window_in_days": 30,
+            "replica": [],
+            "tags": {},
+            "tags_all": {}
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "db_secret_version",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:us-east-1:950724106693:secret:rds/dev-postgres/postgres1/kkpostgres-l6Sh6a",
+            "has_secret_string_wo": null,
+            "id": "arn:aws:secretsmanager:us-east-1:950724106693:secret:rds/dev-postgres/postgres1/kkpostgres-l6Sh6a|terraform-20250517133707046800000001",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:us-east-1:950724106693:secret:rds/dev-postgres/postgres1/kkpostgres-l6Sh6a",
+            "secret_string": "{\"password\":\"K1ran123\",\"username\":\"kkpostgres\"}",
+            "secret_string_wo": null,
+            "secret_string_wo_version": null,
+            "version_id": "terraform-20250517133707046800000001",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_secretsmanager_secret.db_secret"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

@@ -42,3 +42,33 @@ resource "aws_db_subnet_group" "db_subnet" {
     Name = "${var.db_identifier}-subnet-group"
   }
 }
+
+# SNS Topic for alarms
+resource "aws_sns_topic" "alarm_topic" {
+  name = "${var.db_identifier}-alarm-topic"
+}
+
+# SNS Subscription for email alert
+resource "aws_sns_topic_subscription" "email_sub" {
+  topic_arn = aws_sns_topic.alarm_topic.arn
+  protocol  = "email"
+  endpoint  = var.alarm_email
+}
+
+# CloudWatch Alarm for CPU Utilization
+resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
+  alarm_name          = "${var.db_identifier}-cpu-alarm"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/RDS"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 70
+  alarm_description   = "Alarm when CPU exceeds 70%"
+  alarm_actions       = [aws_sns_topic.alarm_topic.arn]
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.postgres1.identifier
+  }
+}
+
