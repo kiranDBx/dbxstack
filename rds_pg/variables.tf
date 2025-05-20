@@ -3,11 +3,11 @@ variable "db_name" {
 }
 
 variable "db_username" {
-  default = "postgresadmin"
+  default = "pg*****dmin"
 }
 
 variable "db_password" {
-  default = "k1ran123"
+  default = "******"
 }
 
 variable "sg_id" {
